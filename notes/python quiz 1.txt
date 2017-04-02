@@ -1,0 +1,70 @@
+Quiz
+
+
+1. Write a program that prompts the user to "Enter your name:", saves what the user types in a variable, and prints "Hello, <name>", where <name> is the text that you saved. For example, if the user typed 'Fred', your program should print:
+
+	Hello, Fred.
+
+HINT:
+* Use the input() function to prompt the user
+* Use the print() function to print the hello message
+
+
+2. Write a program that prompts the user to enter a number, then to enter a second number, then print out both numbers, then print the result of the following operations applied to both numbers: addition, subtraction, multiplication, division, integer division, modulo (remainder) and exponentiation. For example, if the user enters 7, then 3, your program should print:
+
+	You entered 7 and 3. 
+	Addition = 10
+	Subtraction = 4
+	Multiplication = 21
+	Division = 2.333333333
+	Integer division = 2
+	Modulo = 1
+	Exponentiation = 343
+
+HINT:
+* Use the int() function to convert the text the user typed into the actual integer values to save.
+* Use the str() function to convert the results of each computation back into strings for printing.
+
+
+3. Write a program that has a list containing the names of your three favorite colors. Ask the user to enter their favorite color, then compare what the user entered to the colors in your list. If the user entered a color that is in your list, say "What do you know - <color> is one of my favorites, too!" If it was not in your list of favorites, say "Well <color> is not one of my favorites, but it looks good on you!".
+
+For example, if your list contains green, blue, and red, and the user types "blue", your program prints:
+
+	What do you know - blue is one of my favorites, too!
+
+If the user types "orange", you print:
+
+	Well orange is not one of my favorites, but it looks good on you!
+
+HINT:
+* There are two ways to test if the user's color is in the list: inside a for loop, or with the "in" operator ("in" is much simpler)
+* You will need if and else statements
+
+
+4. WITHOUT LOOKING AT YOUR OLD PROGRAM: Write the number guessing game program. First, the computer picks a random number in some range (you can choose the range). Then the computer prompts the user to guess a number. If the guess equals the computer's number, say "You guessed it!", and exit. If the user wants to quit, he just presses Enter (without typing a number), and the program says "My number was XXX", where XXX was the random number picked earlier. Otherwise, say "Guess higher" if the guess is too low, and "Guess lower" if the guess was too high, and prompt the user to guess again. Keep prompting until the user make the correct guess, or they wish to quit by pressing Enter. 
+
+HINT:
+* You will need to import the 'random' module
+* You will need a while loop that will keep asking the user to guess; you will exit this loop only by guessing correctly, or by pressing Enter to quit
+
+
+5. Modify the previous program to keep track of how many guesses the user made, and report this number back to the user when they quit by pressing Enter, or when they finally guess the correct number.
+
+
+6. Write a program that prints out all 52 cards in a standard deck of cards. You should do so by creating two lists: one with the 4 suits, another with the 13 card types. Then use nested for loops (one loop inside another) to print each possible combination of suit and card type.
+
+
+7. Define a function that takes as input a positive integer, then computes the sum of all positive integers from one up to that number, and returns this sum. If you pass in a negative number or zero, make it return 0. Call this function with five different inputs, and print the result of each call.
+
+For example, if you call it with 5 as its input, the function should return 15 (i.e. 1 + 2 + 3 + 4 + 5). If you call it with -5 as input, it should return 0.
+
+HINT:
+* Use the range() function to make a list of all the numbers from 1 up to your input number. Then use a for loop to add them all up.
+
+
+
+
+
+
+
+

@@ -1,0 +1,98 @@
+Quiz 2
+
+
+1. Prompt the user with the text "Please tell me your name: ", save what the user typed, then print the following greeting: "Nice to meet you, <name>.", where <name> is the name they typed. For example, if I type "Chris" the program should say "Nice to meet you, Chris."
+
+HINT:
+Use the input() function to prompt the user. Use the print() function to print the reply.
+
+
+2. Prompt the user to enter the year they were born, save what they typed into a variable, then tell them how old they are. For example, I will type "1971", and your program should reply "You are 46 years old."
+
+HINT:
+Use the int() function to convert the text the user typed into an integer so you can compute the age. Use the str() function to turn the computed age into a string so you can print it.
+
+
+3. Write a program that prompts the user to enter a number, then to enter a second number. Your program should print out both numbers, then print the result of the following operations on those numbers: addition, subtraction, multiplication, division, integer division, modulo (remainder) and exponentiation. For example, if the user enters 7, then 3, your program should print:
+
+	You entered 7 and 3. 
+	10
+	4
+	21
+	2.333333333
+	2
+	1
+	343
+
+
+4. Starting with Sunday, put the names of all seven days of the week into a list. Use a loop to print all seven names, each one on a separate line:
+
+	Sunday
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+
+HINT:
+You will want to use a 'for' loop.
+
+
+5. Using the same list of seven days of the week, write a program that only prints out the weekdays:
+
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+
+HINT:
+You can refer to the elements of a list by using their numeric index in square brackets e.g. if my list was called days_of_the_week, then days_of_the_week[0] would return Sunday.
+
+CHALLENGE:
+Perhaps you solved #5 by writing five print() statements. If so, can you now solve it with a 'for' loop, the range() function, and one print() statement inside the loop?
+
+
+6. Write a program that prompts the user to enter one number, then to enter a second number. Tell the user if the first number was larger than the second, smaller than the second, or the same as the second.
+
+HINT:
+You will need some 'if' statements. Also, remember to use the double-equal-sign (==) to compare if two values are equal, not the single equal sign (which is used for setting the value of a variable).
+
+
+7. Write a program that simulates the rolling of two six-sided dice over and over again until you finally roll "snake eyes" (two 1's). Print the result of each roll, and also print the text "snake eyes!" when you finally roll two 1's. Output of the program might look something like this:
+
+1 6
+2 3
+2 2
+1 5
+5 2
+6 6
+1 1
+snake eyes!
+
+HINT:
+You will need to import the 'random' module, and to use the randint() function to generate random numbers between 1 and 6. You will need a 'while' loop to keep going until you roll snake eyes, with a Boolean (True/False) variable to control when the 'while' loop should stop.
+
+
+8. Write a program that prints out all 52 cards in a standard deck of cards. You should do so by creating two lists: one with the 4 suits, another with the 13 card types. Then use nested 'for' loops (one loop inside another) to print each possible combination of suit and card type.
+
+
+9. Define a function that takes as input a positive integer, then computes the sum of all positive integers from one up to that number, and returns this sum. If you pass in a negative number or zero, make it return 0. Call this function with five different inputs, and print the result of each call.
+
+For example, if you call it with 5 as its input, the function should return 15 (i.e. 1 + 2 + 3 + 4 + 5). If you call it with -5 as input, it should return 0.
+
+HINT:
+Use the range() function to make a list of all the numbers from 1 up to your input number. Then use a 'for' loop to add them all up.
+
+
+10. WITHOUT LOOKING AT YOUR OLD PROGRAM: Write the number guessing game. 
+
+First, the computer picks a random number in some range (you can choose the range). Then prompt the user to guess a number in that range (e.g. "Guess a number between 1 and 100"). If the guess equals the computer's number, say "You got it!", and exit. Otherwise, say "Guess higher" if the guess is too low, and "Guess lower" if the guess was too high, and prompt the user to guess again.
+
+If the user wants to quit, he just presses Enter (without typing a number), and the program says "My number was <x>", where <x> was the number picked earlier. Then the program exits.
+
+HINT:
+* You will need to import the 'random' module, and to use randint()
+* You will need a while loop that will keep asking the user to guess; you will exit this loop only by guessing correctly, or by pressing Enter to quit
+

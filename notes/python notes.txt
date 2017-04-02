@@ -1,0 +1,201 @@
+Interpreter
+* Reads your commands and executes them; follow syntax rules or get error
+
+Comment (#)
+* Ignored by the interpreter; meant for humans
+
+Variable & Assignment (=)
+* Reserving memory to store a value, and giving that memory a NAME
+* Creating - just assign a value for the first time:
+    speed = 20  # New variable called speed is created
+    time = 10   # New variable called time is created
+* Using:
+    distance = speed * time  # New variable called distance created; value of speed and time are used
+* Shorthand (+=, -=, *=, /=). These two are equivalent:
+    speed = speed + 10
+    speed += 10
+
+Data Type (number [integer, long, floating point, complex], boolean, string, list, tuple, dictionary)
+    # integer
+    x = 10
+    # floating point
+    y = 5.5
+    # Boolean
+    z = True
+    # String
+    s = "Fred"
+
+List
+* Creating a list:
+    empty_list = []
+    integer_list = [10, 20, 30, 40]
+    string_list = ["Alice", "Bob", "Charlie"]
+    mixed_list = ["Alice", 20, False]
+* Refer to element in the list (indexed from 0):
+    string_list[1]  # "Bob"
+    mixed_list[2]   # False
+* Adding to end of existing list:
+    empty_list.append("Stooge")  # ["Stooge"]
+    empty_list.append("Fred")    # Now: ["Stooge", "Fred"]
+
+Tuple ("read-only" list)
+* Creating a tuple:
+    integer_tuple = (10, 50)
+    string_tuple = ("Fred", "Bear", "Ted", "Nugent")
+* Using:
+    integer_tuple[0]      # OK
+    integer_tuple[0] = 5  # Invalid; cannot overwrite values; read-only!
+
+Dictionary ("look-up table")
+* Name + value pairs; retrieve value by providing name
+* Creating a dictionary, and adding entries:
+    parents = {}  # empty dictionary
+    parents["Ruike"] = "Zhihui"
+    parents["Ruina"] = "Zhihui"
+    parents["Breanna"] = "Chris"
+    parents["Calysta"] = "Chris"
+    parents["Danny"] = "Eugene"
+    parents["Sanjeev"] = "Suresh"
+    parents["Prithika"] = "Suresh"
+* Using dictionary to look up value:
+    print("Danny's parent is " + parents["Danny"] + ".")
+    # Will print "Danny's parent is Eugene."
+
+
+Arithmetic Operators (+ - * / // % **)
+* Standard order of operations (exponent, multiply/divide, add/subtract)
+* Group with parentheses
+* Integer division (//) discards fraction
+* Modulo operator (%) gives REMAINDER from integer division - useful for "wrapping around" a list
+
+Comparison Operators (< > <= >= == !=)
+* Produce Boolean value as result
+* Used by loops and if statements
+
+Membership Operators (in, not in)
+* Return True if left side is member of the string/list/tuple on the right
+    if "Bear" in string_tuple:
+        # Get here if the string "Bear" is in the tuple string_tuple (it is, above)
+
+Logical Operators (and, or, not)
+* Form complicated Boolean expressions from simpler ones
+    if x > 10 and x < 20:
+        # Only get here if x has a value from 11 to 19, inclusive
+    if name == "Fred" or name == "Bob":
+        # Only get here is name is either "Fred" or "Bob"
+    if not warm_outside:
+        # Only get here if warm_outside is False (making expression True)
+
+Decision Making (if/elif/else)
+* if statement causes following statement(s) to run only if the condition is True:
+    if this_is_true:
+        # then this will be executed
+    else:
+        # Otherwise, if this_is_true is actually False, this part will be reached
+* Can NEST control statements:
+    if this_is_true:
+        if this_is_also_true:
+            # only if both inner and outer ifs are True do we get here
+        else:
+            # outer if was True, but inner if was not
+    else:
+        # outer if was False
+
+Loops (for, while)
+* for loop repeats over every element in a sequence (list):
+    names = ["Alice", "Bala", "Chen"]
+    for name in names:
+        # 1st time through, name = "Alice"; 2nd time, name = "Bala"; 3rd time, name = "Chen"
+        print("name is: " + name)
+* The range() function can create a list of numbers in a range, which you can then use in a for loop just like any other list:
+    for x in range(0, 9):
+        # 1st time through, x = 0; 2nd time, x = 1; 3rd time, x = 2; and so on, up to 9...
+        print("x = " + str(x))
+* while loop repeats as long as the loop condition stays True (i.e. stops when it is False):
+    keep_going = True
+    while keep_going:
+        # keep doing this
+        ...
+        if key_pressed == "q":
+            keep_going = False  # we are done; loop will exit on the next pass
+    # after the loop exits, we continue here
+
+Block (indentation)
+* Group multiple statements together inside an if, or a loop, or a function, or a class, by indenting
+
+Module
+* A Python file with functions, classes, variables that you can use in your own program
+* Make module available by 'import' keyword:
+    import pygame
+    import random
+* Use functions/variables/classes in the module by using module name followed by dot:
+    pygame.init()  # calls the init() function in the pygame module
+    speed = random.randrange(4, 6)  # calls the randrange() function in the random module
+
+Function (definition, invocation)
+* Gives a NAME to a block of code
+* Defined first, with 'def' keyword; invoked later by using name plus parentheses
+* Can take parameters - values that you pass to the function, to be used inside the function
+    def print_a_name(name):
+        print("Hello. My name is " + name)
+
+    print_a_name("Fred")
+    print_a_name("Chandra")
+
+Class (definition, instantiation)
+* A way to group functions and variables together to make a new data type
+* Use class to create Objects (instances) of that class
+* Defined via 'class' keyword
+* Special function called Constructor has name of __init__(); executed when creating a new Object
+* First parameter to functions in class is a reference to the instance itself; usually called 'self'
+* For example, if your video game has multiple players, you can make a Player class:
+    class Player():
+        number_of_players = 0
+        def __init__(self, name):
+            Player.number_of_players += 1
+            self.name = name
+            self.score = 0     # New player starts with no points and 100 health meter
+            self.health = 100
+        def add_points(self, points):
+            self.score += points
+        def subtract_health(self, damage):
+            self.health -= damage
+* Create variables in the instance by assigning to them through the 'self' instance (often done in constructor)
+
+
+Object
+* Instances of a class.
+* Each instance has ITS OWN set of variables in memory
+* Created by using class name followed by parentheses containing arguments to constructor:
+    player1 = Player("Fred")
+    player2 = Player("Wen")
+    print("Number of players: " + str(Player.number_of_players) )
+* Functions and variables on the object are referred to via object name and dot:
+    print("Player 1 is: " + player1.name)  # retrieve name of player1
+    player1.add_points(5)  # call add_points() function on player1 (i.e. self = player1)
+    player1.add_points(5)  # call add_points() function on player2 (i.e. self = player2)
+    print("Player 1 score = " + str(player1.score))  # retrieve value of score from player1 object
+
+Built-in Functions
+    print()  # Print argument(s) as text to the screen
+    input()  # Prompt user to enter text from keyboard; returns the string the user typed
+    eval()   # Evaluate the string argument as if it were Python code, return the evaluation result
+    range()  # Returns a list of integers in the range specified by the arguments
+    str()    # Converts its argument to a string e.g. str(28) returns "28"
+    chr()    # Return ASCII character encoded by the integer argument e.g. chr(65) returns "A"
+    ord()    # Return the integer encoding of the character argument e.g. ord("A") returns 65
+    int()    # Converts its string argument into an integer value e.g. int("32") returns 32
+    round()  # Mathematically round its number argument, return the rounded result
+
+Random module functions
+    random.choice()
+    random.randint()
+    random.randrange()
+
+String class functions
+    islower()  # True when the string is all lowercase characters
+    isupper()  # True when the string is all uppercase characters
+    lower()    # Return the string with all uppercase converted to lowercase
+    upper()    # Return the string with all lowercase converted to uppercase
+    
+
