@@ -3,36 +3,31 @@ pygame.init()
 
 screen = pygame.display.set_mode([800,1000])
 
-BLOCK_WIDTH = 100
-BLOCK_HEIGHT = 100
+BLOCK_SIZE = 50
 BLACK = (0,0,0)
 
 DROP_EVENT = pygame.USEREVENT + 1
 
+stooge_image = pygame.transform.smoothscale( \
+    pygame.image.load("/home/ctd/personal/python/img/stooge.png"), (BLOCK_SIZE, BLOCK_SIZE) )
 
 class Block():
-    def __init__(self, image_path):
-        self.image = pygame.image.load(image_path)
+    def __init__(self, image):
+        self.image = image
         self.x = 0
         self.y = 0
 
     def move_left(self):
         if self.x > 0:
-            self.x -= BLOCK_WIDTH
-            if self.x < 0:
-                self.x = 0
+            self.x -= BLOCK_SIZE
 
     def move_right(self):
-        if self.x < screen.get_width() - BLOCK_WIDTH:
-            self.x += BLOCK_WIDTH
-            if self.x > screen.get_width() - BLOCK_WIDTH:
-                self.x = screen.get_width() - BLOCK_WIDTH
+        if self.x < screen.get_width() - BLOCK_SIZE:
+            self.x += BLOCK_SIZE
 
     def move_down(self):
-        if self.y < screen.get_height() - BLOCK_HEIGHT:
-            self.y += BLOCK_HEIGHT
-            if self.y > screen.get_height() - BLOCK_HEIGHT:
-                self.y = screen.get_height() - BLOCK_HEIGHT
+        if self.y < screen.get_height() - BLOCK_SIZE:
+            self.y += BLOCK_SIZE
 
     def rotate(self):
         self.image = pygame.transform.rotate( self.image, 90 )
@@ -40,7 +35,8 @@ class Block():
     def position(self):
         return (self.x, self.y)
 
-block = Block("/home/ctd/Desktop/stooge.png")
+
+block = Block( stooge_image )
 
 pygame.time.set_timer( DROP_EVENT, 1000 )
 
@@ -66,7 +62,7 @@ while running:
 
 pygame.quit()
 
-                
+
             
 def new_grid(x, y):
     grid = []                # empty grid (no rows)
