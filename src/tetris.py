@@ -12,16 +12,58 @@ BLACK = (0,0,0)
 DROP_EVENT = pygame.USEREVENT + 1
 
 # Grids for each type of piece
-SQUARE_GRIDS    = [ [[2,2],[2,2]] ]
-BAR_GRIDS       = [ [[5,5,5,5]] , [[-1,5],[-1,5],[-1,5],[-1,5]] ]
-Z_GRIDS         = [ [[3,3,-1],[-1,3,3]] , [[-1,3],[3,3],[3,-1]] ]
-REVERSE_Z_GRIDS = [ [[-1,0,0],[0,0,-1]] , [[0,-1],[0,0],[-1,0]] ]
-L_GRIDS         = [ [[1,1,1],[1,-1,-1]] , [[1,1],[-1,1],[-1,1]] , [[-1,-1,1],[1,1,1]] , [[1,-1],[1,-1],[1,1]] ]
-REVERSE_L_GRIDS = [ [[4,4,4],[-1,-1,4]] , [[-1,4],[-1,4],[4,4]] , [[4,-1,-1],[4,4,4]] , [[4,4],[4,-1],[4,-1]] ]
-T_GRIDS         = [ [[6,6,6],[-1,6,-1]] , [[-1,6,-1],[6,6,-1],[-1,6,-1]] , [[-1,6,-1],[6,6,6]] , [[-1,6,-1],[-1,6,6],[-1,6,-1]] ]
+SQUARE_GRIDS    = [ [[-1,-1,-1,-1],[-1,2,2,-1],[-1,2,2,-1],[-1,-1,-1,-1]] ]
+
+BAR_GRIDS       = [ [[-1,-1,-1,-1],[5,5,5,5],[-1,-1,-1,-1],[-1,-1,-1,-1]],
+                    [[-1,-1,5,-1],[-1,-1,5,-1],[-1,-1,5,-1],[-1,-1,5,-1]] ]
+
+Z_GRIDS         = [ [[-1,-1,-1,-1],[-1,3,3,-1],[-1,-1,3,3],[-1,-1,-1,-1]],
+                    [[-1,-1,-1,3],[-1,-1,3,3],[-1,-1,3,-1],[-1,-1,-1,-1]] ]
+
+REVERSE_Z_GRIDS = [ [[-1,-1,-1,-1],[-1,-1,0,0],[-1,0,0,-1],[-1,-1,-1,-1]],
+                    [[-1,-1,0,-1],[-1,-1,0,0],[-1,-1,-1,0],[-1,-1,-1,-1]] ]
+
+L_GRIDS         = [ [[-1,-1,-1,-1],[-1,1,1,1],[-1,1,-1,-1],[-1,-1,-1,-1]],
+                    [[-1,-1,1,-1],[-1,-1,1,-1],[-1,-1,1,1],[-1,-1,-1,-1]],
+                    [[-1,-1,-1,1],[-1,1,1,1],[-1,-1,-1,-1],[-1,-1,-1,-1]],
+                    [[-1,1,1,-1],[-1,-1,1,-1],[-1,-1,1,-1],[-1,-1,-1,-1]] ]
+
+REVERSE_L_GRIDS = [ [[-1,-1,-1,-1],[-1,4,4,4],[-1,-1,-1,4],[-1,-1,-1,-1]],
+                    [[-1,-1,4,4],[-1,-1,4,-1],[-1,-1,4,-1],[-1,-1,-1,-1]],
+                    [[-1,4,-1,-1],[-1,4,4,4],[-1,-1,-1,-1],[-1,-1,-1,-1]],
+                    [[-1,-1,4,-1],[-1,-1,4,-1],[-1,4,4,-1],[-1,-1,-1,-1]] ]
+
+T_GRIDS         = [ [[-1,-1,-1,-1],[-1,6,6,6],[-1,-1,6,-1],[-1,-1,-1,-1]],
+                    [[-1,-1,6,-1],[-1,-1,6,6],[-1,-1,6,-1],[-1,-1,-1,-1]],
+                    [[-1,-1,6,-1],[-1,6,6,6],[-1,-1,-1,-1],[-1,-1,-1,-1]],
+                    [[-1,-1,6,-1],[-1,6,6,-1],[-1,-1,6,-1],[-1,-1,-1,-1]] ]
 
 # All piece grids in one list - spawn randomly from this
 ALL_GRIDS = [ REVERSE_Z_GRIDS, Z_GRIDS, L_GRIDS, REVERSE_L_GRIDS, SQUARE_GRIDS, BAR_GRIDS, T_GRIDS ]
+
+def new_board_grid() :
+    return [[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
+            [9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9]]
 
 # All images in a list - index
 def scale_image(image_file):
@@ -60,13 +102,44 @@ class Piece():
     def rotate(self):
         self.grid_index = (self.grid_index + 1) % len(self.grids)
 
+    def rows(self):
+        return len( self.grid() )
+
+    def columns(self):
+        return len( self.grid()[0] )
+
+    def cell(self, row, col):
+        return self.grid()[row][col]
+
+    
+class Board():
+    def __init__(self, grid):
+        self.grid = grid
+
+    def place_piece(self, piece):
+        for y in range( piece.rows() ):
+            for x in range( piece.columns() ):
+                cell = piece.cell(y, x)
+                if cell >= 0:
+                    row = y + piece.y + 1
+                    col = x + piece.x + 1
+                    self.grid[row][col] = cell
+
 def render_piece( piece, surface ):
-    for y in range( len(piece.grid()) ):
-        for x in range( len(piece.grid()[y]) ):
-            if piece.grid()[y][x] >= 0:
+    for y in range( piece.rows() ):
+        for x in range( piece.columns() ):
+            if piece.cell(y, x) >= 0:
                 screenx = (piece.x + x) * BLOCK_SIZE
                 screeny = (piece.y + y) * BLOCK_SIZE
-                surface.blit( images[ piece.grid()[y][x] ], (screenx, screeny) )
+                surface.blit( images[ piece.cell(y, x) ], (screenx, screeny) )
+
+def render_board( board, surface ):
+    for y in range(1, BOARD_HEIGHT + 1):
+        for x in range(1, BOARD_WIDTH + 1):
+            if board.grid[y][x] >= 0:
+                screenx = (x - 1) * BLOCK_SIZE
+                screeny = (y - 1) * BLOCK_SIZE
+                surface.blit( images[ board.grid[y][x] ], (screenx, screeny) )
 
 def spawn_piece():
     grids = random.choice(ALL_GRIDS)
@@ -74,9 +147,10 @@ def spawn_piece():
     spawn_y = 0
     return Piece( spawn_x, spawn_y, grids )
 
-pygame.time.set_timer( DROP_EVENT, 1000 )
 
+pygame.time.set_timer( DROP_EVENT, 1000 )
 piece = spawn_piece()  # make the first piece
+board = Board( new_board_grid() )
 running = True
 while running:
     for event in pygame.event.get():
@@ -90,12 +164,14 @@ while running:
             elif event.key == pygame.K_UP:
                 piece.rotate()
             elif event.key == pygame.K_s:
+                board.place_piece( piece )
                 piece = spawn_piece()  # make a new piece when 's' is pressed (just for testing purposes)
         elif event.type == DROP_EVENT:
             piece.move_down()
 
     # draw
     screen.fill(BLACK)
+    render_board( board, screen )
     render_piece( piece, screen )
     pygame.display.update()
 
