@@ -6,68 +6,141 @@ screen = pygame.display.set_mode([800,1000])
 
 BOARD_WIDTH = 16
 BOARD_HEIGHT = 20
-BLOCK_SIZE = 50
+BOARD_BORDER = 2
+PIECE_SIZE = 4
+BLOCK_PIXELS = 50
 BLACK = (0,0,0)
 
 DROP_EVENT = pygame.USEREVENT + 1
 
 # Grids for each type of piece
-SQUARE_GRIDS    = [ [[-1,-1,-1,-1],[-1,2,2,-1],[-1,2,2,-1],[-1,-1,-1,-1]] ]
+SQUARE_GRIDS    = [ [[-1,-1,-1,-1],
+                     [-1, 2, 2,-1],
+                     [-1, 2, 2,-1],
+                     [-1,-1,-1,-1]] ]
 
-BAR_GRIDS       = [ [[-1,-1,-1,-1],[5,5,5,5],[-1,-1,-1,-1],[-1,-1,-1,-1]],
-                    [[-1,-1,5,-1],[-1,-1,5,-1],[-1,-1,5,-1],[-1,-1,5,-1]] ]
+BAR_GRIDS       = [ [[-1,-1,-1,-1],
+                     [ 5, 5, 5, 5],
+                     [-1,-1,-1,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1, 5,-1],
+                     [-1,-1, 5,-1],
+                     [-1,-1, 5,-1],
+                     [-1,-1, 5,-1]] ]
 
-Z_GRIDS         = [ [[-1,-1,-1,-1],[-1,3,3,-1],[-1,-1,3,3],[-1,-1,-1,-1]],
-                    [[-1,-1,-1,3],[-1,-1,3,3],[-1,-1,3,-1],[-1,-1,-1,-1]] ]
+Z_GRIDS         = [ [[-1,-1,-1,-1],
+                     [-1, 3, 3,-1],
+                     [-1,-1, 3, 3],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1,-1, 3],
+                     [-1,-1, 3, 3],
+                     [-1,-1, 3,-1],
+                     [-1,-1,-1,-1]] ]
 
-REVERSE_Z_GRIDS = [ [[-1,-1,-1,-1],[-1,-1,0,0],[-1,0,0,-1],[-1,-1,-1,-1]],
-                    [[-1,-1,0,-1],[-1,-1,0,0],[-1,-1,-1,0],[-1,-1,-1,-1]] ]
+REVERSE_Z_GRIDS = [ [[-1,-1,-1,-1],
+                     [-1,-1, 0, 0],
+                     [-1, 0, 0,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1, 0,-1],
+                     [-1,-1, 0, 0],
+                     [-1,-1,-1, 0],
+                     [-1,-1,-1,-1]] ]
 
-L_GRIDS         = [ [[-1,-1,-1,-1],[-1,1,1,1],[-1,1,-1,-1],[-1,-1,-1,-1]],
-                    [[-1,-1,1,-1],[-1,-1,1,-1],[-1,-1,1,1],[-1,-1,-1,-1]],
-                    [[-1,-1,-1,1],[-1,1,1,1],[-1,-1,-1,-1],[-1,-1,-1,-1]],
-                    [[-1,1,1,-1],[-1,-1,1,-1],[-1,-1,1,-1],[-1,-1,-1,-1]] ]
+L_GRIDS         = [ [[-1,-1,-1,-1],
+                     [-1, 1, 1, 1],
+                     [-1, 1,-1,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1, 1,-1],
+                     [-1,-1, 1,-1],
+                     [-1,-1, 1, 1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1,-1, 1],
+                     [-1, 1, 1, 1],
+                     [-1,-1,-1,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1, 1, 1,-1],
+                     [-1,-1, 1,-1],
+                     [-1,-1, 1,-1],
+                     [-1,-1,-1,-1]] ]
 
-REVERSE_L_GRIDS = [ [[-1,-1,-1,-1],[-1,4,4,4],[-1,-1,-1,4],[-1,-1,-1,-1]],
-                    [[-1,-1,4,4],[-1,-1,4,-1],[-1,-1,4,-1],[-1,-1,-1,-1]],
-                    [[-1,4,-1,-1],[-1,4,4,4],[-1,-1,-1,-1],[-1,-1,-1,-1]],
-                    [[-1,-1,4,-1],[-1,-1,4,-1],[-1,4,4,-1],[-1,-1,-1,-1]] ]
+REVERSE_L_GRIDS = [ [[-1,-1,-1,-1],
+                     [-1, 4, 4, 4],
+                     [-1,-1,-1, 4],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1, 4, 4],
+                     [-1,-1, 4,-1],
+                     [-1,-1, 4,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1, 4,-1,-1],
+                     [-1, 4, 4, 4],
+                     [-1,-1,-1,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1, 4,-1],
+                     [-1,-1, 4,-1],
+                     [-1, 4, 4,-1],
+                     [-1,-1,-1,-1]] ]
 
-T_GRIDS         = [ [[-1,-1,-1,-1],[-1,6,6,6],[-1,-1,6,-1],[-1,-1,-1,-1]],
-                    [[-1,-1,6,-1],[-1,-1,6,6],[-1,-1,6,-1],[-1,-1,-1,-1]],
-                    [[-1,-1,6,-1],[-1,6,6,6],[-1,-1,-1,-1],[-1,-1,-1,-1]],
-                    [[-1,-1,6,-1],[-1,6,6,-1],[-1,-1,6,-1],[-1,-1,-1,-1]] ]
+T_GRIDS         = [ [[-1,-1,-1,-1],
+                     [-1, 6, 6, 6],
+                     [-1,-1, 6,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1, 6,-1],
+                     [-1,-1, 6, 6],
+                     [-1,-1, 6,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1, 6,-1],
+                     [-1, 6, 6, 6],
+                     [-1,-1,-1,-1],
+                     [-1,-1,-1,-1]],
+                    
+                    [[-1,-1, 6,-1],
+                     [-1, 6, 6,-1],
+                     [-1,-1, 6,-1],
+                     [-1,-1,-1,-1]] ]
 
 # All piece grids in one list - spawn randomly from this
 ALL_GRIDS = [ REVERSE_Z_GRIDS, Z_GRIDS, L_GRIDS, REVERSE_L_GRIDS, SQUARE_GRIDS, BAR_GRIDS, T_GRIDS ]
 
 def new_board_grid() :
-    return [[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,9],
-            [9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9]]
+    return [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+            [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 9, 9],
+            [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+            [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]]
 
 # All images in a list - index
 def scale_image(image_file):
-    return pygame.transform.smoothscale( pygame.image.load(image_file), (BLOCK_SIZE, BLOCK_SIZE) )
+    return pygame.transform.smoothscale( pygame.image.load(image_file), (BLOCK_PIXELS, BLOCK_PIXELS) )
 
 images = [ scale_image("/home/ctd/personal/python/img/stooge1.png"),
            scale_image("/home/ctd/personal/python/img/stooge2.png"),
@@ -83,33 +156,23 @@ class Piece():
         self.y = y
         self.grids = grids
         self.grid_index = 0
-
-    def grid(self):
-        return self.grids[self.grid_index]
+        self.grid = self.grids[self.grid_index]
 
     def move_left(self):
-        if self.x > 0:
+        if self.x > BOARD_BORDER:
             self.x -= 1
 
     def move_right(self):
-        if self.x < BOARD_WIDTH - len(self.grid()[0]):
+        if self.x < BOARD_WIDTH + BOARD_BORDER - PIECE_SIZE:
             self.x += 1
 
     def move_down(self):
-        if self.y < BOARD_HEIGHT - len(self.grid()):
+        if self.y < BOARD_HEIGHT + BOARD_BORDER - PIECE_SIZE:
             self.y += 1
 
     def rotate(self):
         self.grid_index = (self.grid_index + 1) % len(self.grids)
-
-    def rows(self):
-        return len( self.grid() )
-
-    def columns(self):
-        return len( self.grid()[0] )
-
-    def cell(self, row, col):
-        return self.grid()[row][col]
+        self.grid = self.grids[self.grid_index]
 
     
 class Board():
@@ -117,34 +180,40 @@ class Board():
         self.grid = grid
 
     def place_piece(self, piece):
-        for y in range( piece.rows() ):
-            for x in range( piece.columns() ):
-                cell = piece.cell(y, x)
+        for y in range( PIECE_SIZE ):
+            for x in range( PIECE_SIZE ):
+                cell = piece.grid[y][x]
                 if cell >= 0:
-                    row = y + piece.y + 1
-                    col = x + piece.x + 1
+                    row = y + piece.y
+                    col = x + piece.x
                     self.grid[row][col] = cell
+                    
+    def is_onscreen(x, y):
+        return x >= BOARD_BORDER and x < BOARD_WIDTH + BOARD_BORDER and y >= BOARD_BORDER and y < BOARD_HEIGHT + BOARD_BORDER
+
 
 def render_piece( piece, surface ):
-    for y in range( piece.rows() ):
-        for x in range( piece.columns() ):
-            if piece.cell(y, x) >= 0:
-                screenx = (piece.x + x) * BLOCK_SIZE
-                screeny = (piece.y + y) * BLOCK_SIZE
-                surface.blit( images[ piece.cell(y, x) ], (screenx, screeny) )
+    for y in range( PIECE_SIZE ):
+        for x in range( PIECE_SIZE ):
+            boardx = piece.x + x
+            boardy = piece.y + y
+            if piece.grid[y][x] >= 0 and Board.is_onscreen(boardx, boardy):
+                screenx = (boardx - BOARD_BORDER) * BLOCK_PIXELS
+                screeny = (boardy - BOARD_BORDER) * BLOCK_PIXELS
+                surface.blit( images[ piece.grid[y][x] ], (screenx, screeny) )
 
 def render_board( board, surface ):
-    for y in range(1, BOARD_HEIGHT + 1):
-        for x in range(1, BOARD_WIDTH + 1):
+    for y in range( BOARD_BORDER, BOARD_HEIGHT + BOARD_BORDER ):
+        for x in range( BOARD_BORDER, BOARD_WIDTH + BOARD_BORDER ):
             if board.grid[y][x] >= 0:
-                screenx = (x - 1) * BLOCK_SIZE
-                screeny = (y - 1) * BLOCK_SIZE
+                screenx = (x - BOARD_BORDER) * BLOCK_PIXELS
+                screeny = (y - BOARD_BORDER) * BLOCK_PIXELS
                 surface.blit( images[ board.grid[y][x] ], (screenx, screeny) )
 
 def spawn_piece():
     grids = random.choice(ALL_GRIDS)
-    spawn_x = (BOARD_WIDTH - len(grids[0][0])) // 2
-    spawn_y = 0
+    spawn_x = (BOARD_WIDTH - PIECE_SIZE) // 2 + BOARD_BORDER
+    spawn_y = 1
     return Piece( spawn_x, spawn_y, grids )
 
 
