@@ -158,21 +158,37 @@ class Piece():
         self.grid_index = 0
         self.grid = self.grids[self.grid_index]
 
-    def move_left(self):
-        if self.x > BOARD_BORDER:
-            self.x -= 1
-
-    def move_right(self):
-        if self.x < BOARD_WIDTH + BOARD_BORDER - PIECE_SIZE:
+    def move_left(self, board):
+        self.x -= 1
+        if self.is_colliding(board):
             self.x += 1
 
-    def move_down(self):
-        if self.y < BOARD_HEIGHT + BOARD_BORDER - PIECE_SIZE:
-            self.y += 1
+    def move_right(self, board):
+        self.x += 1
+        if self.is_colliding(board):
+            self.x -= 1
 
-    def rotate(self):
+    def move_down(self, board):
+        self.y += 1
+        if self.is_colliding(board):
+            self.y -= 1
+
+    def rotate(self, board):
         self.grid_index = (self.grid_index + 1) % len(self.grids)
         self.grid = self.grids[self.grid_index]
+        if self.is_colliding(board):
+            self.grid_index = (self.grid_index - 1) % len(self.grids)
+            self.grid = self.grids[self.grid_index]
+            
+
+    def is_colliding(self, board):
+        for y in range( PIECE_SIZE ):
+            for x in range( PIECE_SIZE ):
+                cell = self.grid[y][x]
+                board_cell = board.grid[self.y + y][self.x + x]
+                if cell > -1 and board_cell > -1:
+                    return True
+        return False
 
     
 class Board():
@@ -227,16 +243,16 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                piece.move_left()
+                piece.move_left(board)
             elif event.key == pygame.K_RIGHT:
-                piece.move_right()
+                piece.move_right(board)
             elif event.key == pygame.K_UP:
-                piece.rotate()
+                piece.rotate(board)
             elif event.key == pygame.K_s:
                 board.place_piece( piece )
                 piece = spawn_piece()  # make a new piece when 's' is pressed (just for testing purposes)
         elif event.type == DROP_EVENT:
-            piece.move_down()
+            piece.move_down(board)
 
     # draw
     screen.fill(BLACK)
