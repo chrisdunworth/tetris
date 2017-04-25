@@ -10,6 +10,7 @@ BOARD_BORDER = 2
 PIECE_SIZE = 4
 BLOCK_PIXELS = 50
 BLACK = (0,0,0)
+IMAGE_FOLDER = "/home/ctd/personal/python/img/"
 
 DROP_EVENT = pygame.USEREVENT + 1
 
@@ -142,13 +143,13 @@ def new_board_grid() :
 def scale_image(image_file):
     return pygame.transform.smoothscale( pygame.image.load(image_file), (BLOCK_PIXELS, BLOCK_PIXELS) )
 
-images = [ scale_image("/home/ctd/personal/python/img/stooge1.png"),
-           scale_image("/home/ctd/personal/python/img/stooge2.png"),
-           scale_image("/home/ctd/personal/python/img/stooge3.png"),
-           scale_image("/home/ctd/personal/python/img/stooge4.png"),
-           scale_image("/home/ctd/personal/python/img/stooge5.png"),
-           scale_image("/home/ctd/personal/python/img/stooge6.png"),
-           scale_image("/home/ctd/personal/python/img/stooge7.png")]
+images = [ scale_image(IMAGE_FOLDER + "stooge1.png"),
+           scale_image(IMAGE_FOLDER + "stooge2.png"),
+           scale_image(IMAGE_FOLDER + "stooge3.png"),
+           scale_image(IMAGE_FOLDER + "stooge4.png"),
+           scale_image(IMAGE_FOLDER + "stooge5.png"),
+           scale_image(IMAGE_FOLDER + "stooge6.png"),
+           scale_image(IMAGE_FOLDER + "stooge7.png")]
 
 class Piece():
     def __init__(self, x, y, grids):
@@ -172,6 +173,9 @@ class Piece():
         self.y += 1
         if self.is_colliding(board):
             self.y -= 1
+            return False
+        else:
+            return True
 
     def rotate(self, board):
         self.grid_index = (self.grid_index + 1) % len(self.grids)
@@ -179,7 +183,12 @@ class Piece():
         if self.is_colliding(board):
             self.grid_index = (self.grid_index - 1) % len(self.grids)
             self.grid = self.grids[self.grid_index]
-            
+
+    def drop_in_place(self, board):
+        while not self.is_colliding(board):
+            self.y += 1
+        self.y -= 1
+        board.place_piece( self )
 
     def is_colliding(self, board):
         for y in range( PIECE_SIZE ):
@@ -248,11 +257,14 @@ while running:
                 piece.move_right(board)
             elif event.key == pygame.K_UP:
                 piece.rotate(board)
-            elif event.key == pygame.K_s:
-                board.place_piece( piece )
-                piece = spawn_piece()  # make a new piece when 's' is pressed (just for testing purposes)
+            elif event.key == pygame.K_SPACE:
+                piece.drop_in_place( board )
+                piece = spawn_piece()
         elif event.type == DROP_EVENT:
-            piece.move_down(board)
+            moved = piece.move_down(board)
+            if not moved:
+                board.place_piece( piece )
+                piece = spawn_piece()
 
     # draw
     screen.fill(BLACK)
