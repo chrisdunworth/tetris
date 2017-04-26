@@ -2,8 +2,6 @@ import pygame
 import random
 pygame.init()
 
-screen = pygame.display.set_mode([800,1000])
-
 BOARD_WIDTH = 10
 BOARD_HEIGHT = 20
 BOARD_BORDER = 2
@@ -11,9 +9,15 @@ PIECE_SIZE = 4
 BLOCK_PIXELS = 50
 BLACK = (0,0,0)
 BLUE  = (0,0,50)
+WHITE = (255,255,255)
 IMAGE_FOLDER = "/home/ctd/personal/python/img/"
 
 DROP_EVENT = pygame.USEREVENT + 1
+TIMER_SPEEDS = [1000, 900, 800, 700, 600, 500, 400, 300, 200, 100]
+MAX_LEVEL = len(TIMER_SPEEDS)
+
+POINTS_PER_ROW_CLEARED = [0, 100, 200, 400, 800]
+ROWS_TO_LEVEL_UP = 10
 
 # Grids for each type of piece
 SQUARE_GRIDS    = [ [[-1,-1,-1,-1],
@@ -189,10 +193,12 @@ class Piece():
             self.grid = self.grids[self.grid_index]
 
     def drop_in_place(self, board):
+        original_y = self.y
         while not self.is_colliding(board):
             self.y += 1
         self.y -= 1
         board.place_piece( self )
+        return self.y - original_y  # how far the piece fell when placed - used for scoring
 
     def is_colliding(self, board):
         for y in range( PIECE_SIZE ):
@@ -218,9 +224,12 @@ class Board():
                     self.grid[row][col] = cell
                     
     def clear_completed_rows(self):
+        rows_cleared = 0
         for y in range(BOARD_BORDER, BOARD_BORDER + BOARD_HEIGHT):
             if self.is_row_complete(y):
                 self.clear_row(y)
+                rows_cleared += 1
+        return rows_cleared  # used for scoring
 
     def is_row_complete(self, y):
         for cell in self.grid[y]:
@@ -234,7 +243,6 @@ class Board():
                     
     def is_onscreen(x, y):
         return x >= BOARD_BORDER and x < BOARD_WIDTH + BOARD_BORDER and y >= BOARD_BORDER and y < BOARD_HEIGHT + BOARD_BORDER
-
 
 def render_piece( piece, surface ):
     for y in range( PIECE_SIZE ):
@@ -254,6 +262,18 @@ def render_board( board, surface ):
                 screeny = (y - BOARD_BORDER) * BLOCK_PIXELS
                 surface.blit( images[ board.grid[y][x] ], (screenx, screeny) )
 
+def render_score( score, font, surface ):
+    text = font.render("Score: " + str(score), True, WHITE)
+    surface.blit( text, (550, 50) )
+
+def render_level( level, font, surface ):
+    text = font.render("Level: " + str(level), True, WHITE)
+    surface.blit( text, (550, 100) )
+
+def render_rows_cleared( rows, font, surface ):
+    text = font.render("Rows: " + str(rows), True, WHITE)
+    surface.blit( text, (550, 150) )
+
 def spawn_piece():
     grids = random.choice(ALL_GRIDS)
     spawn_x = (BOARD_WIDTH - PIECE_SIZE) // 2 + BOARD_BORDER
@@ -261,7 +281,14 @@ def spawn_piece():
     return Piece( spawn_x, spawn_y, grids )
 
 
+screen = pygame.display.set_mode([800,1000])
 pygame.time.set_timer( DROP_EVENT, 1000 )
+font = pygame.font.SysFont("arial", 20)
+
+score = 0
+level = 1
+total_rows_cleared = 0
+
 piece = spawn_piece()  # make the first piece
 board = Board( new_board_grid() )
 running = True
@@ -277,21 +304,34 @@ while running:
             elif event.key == pygame.K_UP:
                 piece.rotate(board)
             elif event.key == pygame.K_SPACE:
-                piece.drop_in_place( board )
-                board.clear_completed_rows()
+                height_dropped = piece.drop_in_place( board )
+                rows_cleared = board.clear_completed_rows()
+                score += height_dropped + POINTS_PER_ROW_CLEARED[rows_cleared]
+                total_rows_cleared += rows_cleared
                 piece = spawn_piece()
         elif event.type == DROP_EVENT:
             moved = piece.move_down(board)
             if not moved:
                 board.place_piece( piece )
-                board.clear_completed_rows()
+                rows_cleared = board.clear_completed_rows()
+                total_rows_cleared += rows_cleared
+                score += POINTS_PER_ROW_CLEARED[rows_cleared]
                 piece = spawn_piece()
+
+    # level-up?
+    if (total_rows_cleared // ROWS_TO_LEVEL_UP) == level and level < MAX_LEVEL:
+        level += 1
+        pygame.time.set_timer( DROP_EVENT, 0 )
+        pygame.time.set_timer( DROP_EVENT, TIMER_SPEEDS[level - 1] )
 
     # draw
     screen.fill(BLACK)
     pygame.draw.rect( screen, BLUE, pygame.Rect((500,0),(300,1000)) )
     render_board( board, screen )
     render_piece( piece, screen )
+    render_score( score, font, screen )
+    render_level( level, font, screen )
+    render_rows_cleared( total_rows_cleared, font, screen )
     pygame.display.update()
 
 pygame.quit()
