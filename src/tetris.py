@@ -19,6 +19,9 @@ MAX_LEVEL = len(TIMER_SPEEDS)
 POINTS_PER_ROW_CLEARED = [0, 100, 200, 400, 800]
 ROWS_TO_LEVEL_UP = 10
 
+NEXT_PIECE_X = 550
+NEXT_PIECE_Y = 50
+
 # Grids for each type of piece
 SQUARE_GRIDS    = [ [[-1,-1,-1,-1],
                      [-1, 2, 2,-1],
@@ -254,6 +257,17 @@ def render_piece( piece, surface ):
                 screeny = (boardy - BOARD_BORDER) * BLOCK_PIXELS
                 surface.blit( images[ piece.grid[y][x] ], (screenx, screeny) )
 
+def render_next_piece( piece, surface ):
+    text = font.render("- Next Piece -", True, WHITE)
+    surface.blit( text, (550, 25) )
+    for y in range( PIECE_SIZE ):
+        for x in range( PIECE_SIZE ):
+            if piece.grid[y][x] >= 0:
+                screenx = NEXT_PIECE_X + (x * BLOCK_PIXELS)
+                screeny = NEXT_PIECE_Y + (y * BLOCK_PIXELS)
+                surface.blit( images[ piece.grid[y][x] ], (screenx, screeny) )
+              
+
 def render_board( board, surface ):
     for y in range( BOARD_BORDER, BOARD_HEIGHT + BOARD_BORDER ):
         for x in range( BOARD_BORDER, BOARD_WIDTH + BOARD_BORDER ):
@@ -264,15 +278,15 @@ def render_board( board, surface ):
 
 def render_score( score, font, surface ):
     text = font.render("Score: " + str(score), True, WHITE)
-    surface.blit( text, (550, 50) )
+    surface.blit( text, (550, 250) )
 
 def render_level( level, font, surface ):
     text = font.render("Level: " + str(level), True, WHITE)
-    surface.blit( text, (550, 100) )
+    surface.blit( text, (550, 300) )
 
 def render_rows_cleared( rows, font, surface ):
     text = font.render("Rows: " + str(rows), True, WHITE)
-    surface.blit( text, (550, 150) )
+    surface.blit( text, (550, 350) )
 
 def spawn_piece():
     grids = random.choice(ALL_GRIDS)
@@ -290,6 +304,7 @@ level = 1
 total_rows_cleared = 0
 
 piece = spawn_piece()  # make the first piece
+next_piece = spawn_piece()
 board = Board( new_board_grid() )
 running = True
 while running:
@@ -308,7 +323,8 @@ while running:
                 rows_cleared = board.clear_completed_rows()
                 score += height_dropped + POINTS_PER_ROW_CLEARED[rows_cleared]
                 total_rows_cleared += rows_cleared
-                piece = spawn_piece()
+                piece = next_piece
+                next_piece = spawn_piece()
         elif event.type == DROP_EVENT:
             moved = piece.move_down(board)
             if not moved:
@@ -316,7 +332,9 @@ while running:
                 rows_cleared = board.clear_completed_rows()
                 total_rows_cleared += rows_cleared
                 score += POINTS_PER_ROW_CLEARED[rows_cleared]
-                piece = spawn_piece()
+                piece = next_piece
+                next_piece = spawn_piece()
+                    
 
     # level-up?
     if (total_rows_cleared // ROWS_TO_LEVEL_UP) == level and level < MAX_LEVEL:
@@ -332,6 +350,7 @@ while running:
     render_score( score, font, screen )
     render_level( level, font, screen )
     render_rows_cleared( total_rows_cleared, font, screen )
+    render_next_piece( next_piece, screen )
     pygame.display.update()
 
 pygame.quit()
