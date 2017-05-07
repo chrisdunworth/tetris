@@ -1,0 +1,54 @@
+Python Exercise
+
+* Ask user to enter a name. Save it. Print out the name.
+
+* Ask user to enter a name. Save it. Print out "Hello, XXX, my name is YYY.", where "XXX" is the name entered, and "YYY" is your name.
+
+* What will be printed to screen if we run these two lines of python, and why are they different:
+
+print("10.5" + "20.6")
+print(10.5 + 20.6)
+
+* Ask user to enter a number. Save it. Convert it from a String to an integer, and save that integer. Multiply the integer by itself and print "The square of X is Y", where X is the what the user entered, Y is that value times itself.
+
+* Create a list of numbers and save it in a variable (e.g. list = [1, 3, 5, 7]). Loop over the list and print everything in it.
+
+* Create a list (e.g. list = [1, 3, 5, 7]). Loop over ther list and count how many elements it has. Print this count. You will need a variable to keep track of the count as you go.
+
+* Use the python len() ("length of") function on the same list from the previous problem to solve this problem in just one line of code.
+
+* Use the same list from the previous problem, and print out just the first and fourth elements from the list. Do not use a loop - just write two print statements.
+
+* Loop over the same list and add the values to each other. Print the final result. You will need a variable to keep track of the answer so far. Use the "+=" operator to do the addition.
+
+* Ask user to enter a number. Convert it from a String to an integer and save it. Write a loop to print "Hello, world!" as many times as the number the user entered.
+
+* Generate a random integer. Print it. Write a loop to print "Hello, world" as many times as the number generated.
+
+* Ask user to enter a number. Compare the number to 100. If it's larger, print "larger than 100". If it's smaller print "Smaller than 100". If it's 100, print "equal to 100".
+
+* Ask the user to enter a name. Compare that name to your own name. If it's the same, print "You have the best name." If it's different, print "That's a fine name, I suppose."
+
+* Create an empty list. Inside a while loop, ask user to enter the name of a family member, and append it to the list. Keep asking (and appending) until the user finally presses Enter by itself (this will return the empty string "" from the input function). Print out how many family members were entered. Then print all the names entered.
+
+* Write a while loop. Inside the loop, generate a random integer between 0 and 100, and print it out. If the integer equals 42, exit the loop.
+
+* Write a function that prints "Woot!" when you call it. It takes no arguments.
+
+* Write a function that takes one argument, a String, and prints it.
+
+* Write a function that takes on argument, an integer, and returns the cube of that value (i.e. the value multiplied by itself 3 times). For example, if you give it 3, it returns 27. Call this function once with some number (your choice) and print the result.
+
+* Write a function that takes two arguments, both strings: a first name and a last name. The function should return a string in the form of "lastname, firstname" (how you might see the name printed when alphebetizing by last name).
+
+* Write a function that takes two arguments, a number and a string. Return a string which is the given string concatenated to itself as many times as the given number. For example, if my string and number are "Fred" and 3, the function should return "FredFredFred".
+
+* Write a function that takes one argument, a list of numbers. Return the SUM of all the numbers in the list. For example, if called with the list [1,3,5,10], it should return 19.
+
+* Write a function that takes two arguments, a string and a list of strings. Return True if the list contains the string as one of its elements, False if it does not. For example, if the string is "Fred" and the list is ["one","two","Fred","foo"], the function should return True.
+
+* Write a function that takes a list of numbers and returns the smallest number from the list.
+
+
+
+
