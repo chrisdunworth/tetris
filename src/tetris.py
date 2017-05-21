@@ -154,13 +154,26 @@ def new_board_row():
 def scale_image(image_file):
     return pygame.transform.smoothscale( pygame.image.load(image_file), (BLOCK_PIXELS, BLOCK_PIXELS) )
 
-images = [ scale_image(IMAGE_FOLDER + "stooge1.png"),
-           scale_image(IMAGE_FOLDER + "stooge2.png"),
-           scale_image(IMAGE_FOLDER + "stooge3.png"),
-           scale_image(IMAGE_FOLDER + "stooge4.png"),
-           scale_image(IMAGE_FOLDER + "stooge5.png"),
-           scale_image(IMAGE_FOLDER + "stooge6.png"),
-           scale_image(IMAGE_FOLDER + "stooge7.png")]
+images = [
+         [scale_image(IMAGE_FOLDER + "stooge1.png"),
+          scale_image(IMAGE_FOLDER + "stooge2.png"),
+          scale_image(IMAGE_FOLDER + "stooge3.png"),
+          scale_image(IMAGE_FOLDER + "stooge4.png"),
+          scale_image(IMAGE_FOLDER + "stooge5.png"),
+          scale_image(IMAGE_FOLDER + "stooge6.png"),
+          scale_image(IMAGE_FOLDER + "stooge7.png")],
+             
+         [scale_image(IMAGE_FOLDER + "programmer1.png"),
+          scale_image(IMAGE_FOLDER + "programmer2.png"),
+          scale_image(IMAGE_FOLDER + "programmer3.png"),
+          scale_image(IMAGE_FOLDER + "programmer4.png"),
+          scale_image(IMAGE_FOLDER + "programmer5.png"),
+          scale_image(IMAGE_FOLDER + "programmer6.png"),
+          scale_image(IMAGE_FOLDER + "programmer7.png")]
+         ]
+
+image_set = 0
+
 
 class Piece():
     def __init__(self, x, y, grids):
@@ -255,7 +268,7 @@ def render_piece( piece, surface ):
             if piece.grid[y][x] >= 0 and Board.is_onscreen(boardx, boardy):
                 screenx = (boardx - BOARD_BORDER) * BLOCK_PIXELS
                 screeny = (boardy - BOARD_BORDER) * BLOCK_PIXELS
-                surface.blit( images[ piece.grid[y][x] ], (screenx, screeny) )
+                surface.blit( images[image_set][ piece.grid[y][x] ], (screenx, screeny) )
 
 def render_next_piece( piece, surface ):
     text = font.render("- Next Piece -", True, WHITE)
@@ -265,7 +278,7 @@ def render_next_piece( piece, surface ):
             if piece.grid[y][x] >= 0:
                 screenx = NEXT_PIECE_X + (x * BLOCK_PIXELS)
                 screeny = NEXT_PIECE_Y + (y * BLOCK_PIXELS)
-                surface.blit( images[ piece.grid[y][x] ], (screenx, screeny) )
+                surface.blit( images[image_set][ piece.grid[y][x] ], (screenx, screeny) )
               
 
 def render_board( board, surface ):
@@ -274,7 +287,7 @@ def render_board( board, surface ):
             if board.grid[y][x] >= 0:
                 screenx = (x - BOARD_BORDER) * BLOCK_PIXELS
                 screeny = (y - BOARD_BORDER) * BLOCK_PIXELS
-                surface.blit( images[ board.grid[y][x] ], (screenx, screeny) )
+                surface.blit( images[image_set][ board.grid[y][x] ], (screenx, screeny) )
 
 def render_score( score, font, surface ):
     text = font.render("Score: " + str(score), True, WHITE)
@@ -288,6 +301,10 @@ def render_rows_cleared( rows, font, surface ):
     text = font.render("Rows: " + str(rows), True, WHITE)
     surface.blit( text, (550, 350) )
 
+def render_game_over( surface ):
+    text = bigfont.render("-: GAME OVER :-", True, WHITE)
+    surface.blit( text, (250, 400) )
+
 def spawn_piece():
     grids = random.choice(ALL_GRIDS)
     spawn_x = (BOARD_WIDTH - PIECE_SIZE) // 2 + BOARD_BORDER
@@ -298,6 +315,7 @@ def spawn_piece():
 screen = pygame.display.set_mode([800,1000])
 pygame.time.set_timer( DROP_EVENT, 1000 )
 font = pygame.font.SysFont("arial", 20)
+bigfont = pygame.font.SysFont("arial", 50)
 
 score = 0
 level = 1
@@ -307,33 +325,57 @@ piece = spawn_piece()  # make the first piece
 next_piece = spawn_piece()
 board = Board( new_board_grid() )
 running = True
+state = "playing"
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                piece.move_left(board)
-            elif event.key == pygame.K_RIGHT:
-                piece.move_right(board)
-            elif event.key == pygame.K_UP:
-                piece.rotate(board)
-            elif event.key == pygame.K_SPACE:
-                height_dropped = piece.drop_in_place( board )
-                rows_cleared = board.clear_completed_rows()
-                score += height_dropped + POINTS_PER_ROW_CLEARED[rows_cleared]
-                total_rows_cleared += rows_cleared
-                piece = next_piece
-                next_piece = spawn_piece()
+            if event.key == pygame.K_ESCAPE:
+                running = False
+            if ( state == "playing" ):
+                if event.key == pygame.K_LEFT:
+                    piece.move_left(board)
+                elif event.key == pygame.K_RIGHT:
+                    piece.move_right(board)
+                elif event.key == pygame.K_UP:
+                    piece.rotate(board)
+                elif event.key == pygame.K_SPACE:
+                    height_dropped = piece.drop_in_place( board )
+                    score += height_dropped
+                    rows_cleared = board.clear_completed_rows()
+                    total_rows_cleared += rows_cleared
+                    score += POINTS_PER_ROW_CLEARED[rows_cleared]
+                    piece = next_piece
+                    next_piece = spawn_piece()
+                    if ( piece.is_colliding(board) ):
+                        # collision right after spawning - game is over!
+                        state = "game over"
+                elif event.key == pygame.K_e:
+                    image_set = (image_set + 1) % len(images)
+            elif ( state == "game over" ):
+                if event.key == pygame.K_p:
+                    # set up for a new game
+                    board = Board( new_board_grid() )
+                    score = 0
+                    level = 1
+                    total_rows_cleared = 0
+                    piece = spawn_piece()
+                    next_piece = spawn_piece()
+                    state = "playing"
         elif event.type == DROP_EVENT:
-            moved = piece.move_down(board)
-            if not moved:
-                board.place_piece( piece )
-                rows_cleared = board.clear_completed_rows()
-                total_rows_cleared += rows_cleared
-                score += POINTS_PER_ROW_CLEARED[rows_cleared]
-                piece = next_piece
-                next_piece = spawn_piece()
+            if ( state == "playing" ):
+                moved = piece.move_down(board)
+                if not moved:
+                    board.place_piece( piece )
+                    rows_cleared = board.clear_completed_rows()
+                    total_rows_cleared += rows_cleared
+                    score += POINTS_PER_ROW_CLEARED[rows_cleared]
+                    piece = next_piece
+                    next_piece = spawn_piece()
+                    if ( piece.is_colliding(board) ):
+                        # collision right after spawning - game is over!
+                        state = "game over"
                     
 
     # level-up?
@@ -351,6 +393,8 @@ while running:
     render_level( level, font, screen )
     render_rows_cleared( total_rows_cleared, font, screen )
     render_next_piece( next_piece, screen )
+    if ( state == "game over" ):
+        render_game_over( screen )
     pygame.display.update()
 
 pygame.quit()
