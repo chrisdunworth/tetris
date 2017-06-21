@@ -335,6 +335,8 @@ public class ParScanResidentsSSBean implements SessionBean
 		return keyMap;
 	}
 	
+	
+	// fred 4
 	private List getAllResidents( String customer, boolean activeResidents ) throws ParScanResidentsEJBException
 	{
 		ParScanResidentBean searchCriteria = new ParScanResidentBean();
