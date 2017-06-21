@@ -442,6 +442,8 @@ public class ParScanResidentsSSBean implements SessionBean
 		return data;
 	}
 
+	
+	// fred 5
 	/**
 	 * Business Method.
 	 */
@@ -536,6 +538,7 @@ public class ParScanResidentsSSBean implements SessionBean
 		return data;
 	}
 		
+	// fred 6
 	public String getActiveAndDismissedResident( ParScanResidentBean residentSearchParams, String fromDate, String toDate, String billExclusion )  
 	throws ParScanResidentsEJBException
 	{
