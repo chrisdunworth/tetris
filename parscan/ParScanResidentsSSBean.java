@@ -1,3 +1,5 @@
+// fred 1
+
 package com.medline.parscan.ParScanResidents;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
@@ -177,6 +179,7 @@ import com.sapportals.wcm.util.content.IContent;
 import com.sapportals.wcm.util.uri.RID;
 import com.sapportals.wcm.util.usermanagement.WPUMFactory;
 
+// fred 2
 
 /**
  * @ejbHome <{com.medline.parscan.ParScanResidents.ParScanResidentsSSHome}>
@@ -17715,6 +17718,8 @@ public class ParScanResidentsSSBean implements SessionBean
 			}
 		}
 	}	
+	
+	// fred 3
 	
 	public boolean isPRDEnvironment() throws ParScanResidentsEJBException
 	{
